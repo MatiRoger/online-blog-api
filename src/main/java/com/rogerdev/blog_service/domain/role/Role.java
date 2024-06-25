@@ -1,6 +1,7 @@
 package com.rogerdev.blog_service.domain.role;
 
 import com.rogerdev.blog_service.domain.permission.Permission;
+import com.rogerdev.blog_service.domain.role.dto.RoleReqDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,7 +20,7 @@ import java.util.Set;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long role_id;
+    private Long id;
     @Column(unique = true, nullable = false)
     private String name;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -28,6 +29,10 @@ public class Role {
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
-    private Set<Permission> permissionsList = new HashSet<>();
+    private Set<Permission> permissionsList;
+
+    public Role (RoleReqDTO dto) {
+        this.name = dto.name();
+    }
 }
 
