@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Entity
+@Entity(name = "user")
 @Table(name = "users")
 public class UserSec {
     @Id
