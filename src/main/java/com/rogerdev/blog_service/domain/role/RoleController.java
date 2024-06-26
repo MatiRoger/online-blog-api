@@ -56,14 +56,14 @@ public class RoleController {
         roleService.deleteRole(roleId);
         return ResponseEntity.noContent().build();
     }
-    @PatchMapping("/removepermission")
+    @PatchMapping("/permission/remove")
     @Transactional
     public ResponseEntity<RoleResDTO> removePermission (@RequestBody RoleModificationResDTO modificationData) {
         Role role = roleService.findRole(modificationData.role_id());
         role.getPermissionsList().remove(permissionService.findPermission(modificationData.permisson_id()));
         return ResponseEntity.ok().body(new RoleResDTO(roleService.saveRole(role)));
     }
-    @PatchMapping("/addpermission")
+    @PatchMapping("/permission/add")
     @Transactional
     public ResponseEntity<RoleResDTO> addPermission (@RequestBody RoleModificationResDTO modificationData) {
         Role role = roleService.findRole(modificationData.role_id());
