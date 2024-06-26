@@ -25,7 +25,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        UserSec user = userRepo.getUserSecEntityByUsername(username)
+        UserSec user = userRepo.getUserEntityByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User: " + username + " not found"));
 
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
