@@ -11,6 +11,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter @Setter
 public class Like {
-    private Long user_id;
+    private String user_name;
     private LocalDate timestamp;
 }

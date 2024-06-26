@@ -5,6 +5,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -25,5 +26,8 @@ public class UserService {
     }
     public String encryptPassword (String plainPassword) {
         return new BCryptPasswordEncoder().encode(plainPassword);
+    }
+    public Optional<UserSec> getUserByUsername (String username) {
+        return userRepo.getUserEntityByUsername(username);
     }
 }
