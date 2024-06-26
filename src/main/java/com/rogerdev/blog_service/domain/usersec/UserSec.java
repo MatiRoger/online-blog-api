@@ -2,6 +2,7 @@ package com.rogerdev.blog_service.domain.usersec;
 
 import com.rogerdev.blog_service.domain.post.Post;
 import com.rogerdev.blog_service.domain.role.Role;
+import com.rogerdev.blog_service.domain.usersec.dto.UserReqDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,4 +43,13 @@ public class UserSec {
             orphanRemoval = true
     )
     private Set<Post> posts;
+
+    public UserSec (UserReqDTO dto) {
+        this.username = dto.username();
+        this.password = dto.password();
+        this.enabled = true;
+        this.accountNotExpired = true;
+        this.credentialNotExpired = true;
+        this.accountNotLocked = true;
+    }
 }
