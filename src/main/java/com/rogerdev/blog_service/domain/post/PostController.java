@@ -65,7 +65,7 @@ public class PostController {
     @PatchMapping("/like/{postId}")
     @Transactional
     public ResponseEntity likePost (@PathVariable Long postId, @RequestHeader("Authorization") String token) {
-        DecodedJWT decodedJWT = jwtUtils.validateToken(token.substring(7));
+        DecodedJWT decodedJWT = jwtUtils.validateToken(token);
 
         String username = jwtUtils.extractUsername(decodedJWT);
         UserSec user = userService.getUserByUsername(username)

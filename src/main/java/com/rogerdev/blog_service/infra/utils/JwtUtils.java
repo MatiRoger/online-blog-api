@@ -49,7 +49,7 @@ public class JwtUtils {
         try {
             JWTVerifier verifier = JWT.require(algorithm).withIssuer(this.userGenerator).build();
 
-            return verifier.verify(token);
+            return verifier.verify(extractTokenPrefix(token));
 
         } catch (JWTVerificationException e) {
             throw new JWTVerificationException(e.toString());
@@ -63,5 +63,9 @@ public class JwtUtils {
     }
     public Map<String, Claim> getClaims (DecodedJWT decodedJWT) {
         return decodedJWT.getClaims();
+    }
+
+    public String extractTokenPrefix (String token) {
+        return token.startsWith("Bearer ") ? token.substring(7) : token;
     }
 }
