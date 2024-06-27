@@ -1,6 +1,7 @@
 package com.rogerdev.blog_service.domain.post;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.rogerdev.blog_service.domain.like.Like;
 import com.rogerdev.blog_service.domain.post.dto.PostReqDTO;
 import com.rogerdev.blog_service.domain.post.dto.PostResDTO;
 import com.rogerdev.blog_service.domain.usersec.UserSec;
@@ -15,10 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/post")
@@ -63,4 +62,27 @@ public class PostController {
         postService.deletePost(postId);
         return ResponseEntity.noContent().build();
     }
+    @PatchMapping("/like/{postId}")
+    @Transactional
+    public ResponseEntity likePost (@PathVariable Long postId, @RequestHeader("Authorization") String token) {
+        DecodedJWT decodedJWT = jwtUtils.validateToken(token.substring(7));
+
+        String username = jwtUtils.extractUsername(decodedJWT);
+        UserSec user = userService.getUserByUsername(username)
+                .orElseThrow(EntityNotFoundException::new);
+
+        Post post = postService.findPost(postId);
+        Set<Like> likes = post.getLikes();
+
+        Like like = new Like(user.getUsername());
+        if (!likes.remove(like)) {
+            likes.add(like);
+        }
+
+        post.setLikes(likes);
+        postService.savePost(post);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }
