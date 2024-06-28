@@ -1,8 +1,14 @@
 package com.rogerdev.blog_service.domain.usersec;
 
+import com.rogerdev.blog_service.domain.usersec.dto.AuthReqDTO;
+import com.rogerdev.blog_service.domain.usersec.dto.AuthResDTO;
 import com.rogerdev.blog_service.infra.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -47,5 +53,31 @@ public class UserDetailsServiceImp implements UserDetailsService {
                 user.isCredentialNotExpired(),
                 authorities
         );
+    }
+    public Authentication authByUsernameAndPassword (String username, String plainPass) {
+
+        UserDetails user = this.loadUserByUsername(username);
+        if (user == null || !passwordEncoder.matches(plainPass, user.getPassword())) {
+            throw new BadCredentialsException("Invalid username or password");
+        }
+        return new UsernamePasswordAuthenticationToken(
+                user.getUsername(),
+                user.getPassword(),
+                user.getAuthorities()
+        );
+
+    }
+
+    public AuthResDTO login(AuthReqDTO authRequest) {
+
+        String username = authRequest.username();
+
+        Authentication auth = this.authByUsernameAndPassword(username, authRequest.password());
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        String token = jwtUtils.generateToken(auth);
+
+        return new AuthResDTO("Login successfully", username, token);
     }
 }
