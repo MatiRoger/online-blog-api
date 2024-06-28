@@ -20,8 +20,9 @@ import java.io.IOException;
 import java.util.Collection;
 
 public class JWTValidator extends OncePerRequestFilter {
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
     public JWTValidator(JwtUtils jwtUtils) {
+        this.jwtUtils = jwtUtils;
     }
 
     @Override
