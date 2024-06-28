@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -64,17 +66,15 @@ public class PostController {
     }
     @PatchMapping("/like/{postId}")
     @Transactional
-    public ResponseEntity likePost (@PathVariable Long postId, @RequestHeader("Authorization") String token) {
-        DecodedJWT decodedJWT = jwtUtils.validateToken(token);
-
-        String username = jwtUtils.extractUsername(decodedJWT);
-        UserSec user = userService.getUserByUsername(username)
-                .orElseThrow(EntityNotFoundException::new);
+    public ResponseEntity likePost (@PathVariable Long postId,
+                                    @RequestHeader(name = "Authorization", required = false) String token,
+                                    @AuthenticationPrincipal OAuth2User principal) {
+        String username = getUserName(token, principal);
 
         Post post = postService.findPost(postId);
         Set<Like> likes = post.getLikes();
 
-        Like like = new Like(user.getUsername());
+        Like like = new Like(username);
         if (!likes.remove(like)) {
             likes.add(like);
         }
@@ -85,4 +85,15 @@ public class PostController {
         return ResponseEntity.noContent().build();
     }
 
+    public String getUserName(String token, OAuth2User principal) {
+        if (token != null) {
+            DecodedJWT decodedJWT = jwtUtils.validateToken(token);
+            String username = jwtUtils.extractUsername(decodedJWT);
+            UserSec user = userService.getUserByUsername(username)
+                    .orElseThrow(EntityNotFoundException::new);
+            return user.getUsername();
+        }
+
+        return principal.getAttribute("login");
+    }
 }
