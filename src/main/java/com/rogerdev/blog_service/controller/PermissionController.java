@@ -1,5 +1,7 @@
-package com.rogerdev.blog_service.domain.permission;
+package com.rogerdev.blog_service.controller;
 
+import com.rogerdev.blog_service.domain.permission.Permission;
+import com.rogerdev.blog_service.domain.permission.PermissionService;
 import com.rogerdev.blog_service.domain.permission.dto.PermissionReqDTO;
 import com.rogerdev.blog_service.domain.permission.dto.PermissionResDTO;
 import jakarta.transaction.Transactional;
@@ -15,7 +17,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/permission")
-@PreAuthorize("hasRole('ADMIN')")
+//@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("permitAll()")
 public class PermissionController {
     @Autowired
     private PermissionService permissionService;

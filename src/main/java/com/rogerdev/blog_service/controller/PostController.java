@@ -1,7 +1,9 @@
-package com.rogerdev.blog_service.domain.post;
+package com.rogerdev.blog_service.controller;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.rogerdev.blog_service.domain.like.Like;
+import com.rogerdev.blog_service.domain.post.Post;
+import com.rogerdev.blog_service.domain.post.PostService;
 import com.rogerdev.blog_service.domain.post.dto.PostReqDTO;
 import com.rogerdev.blog_service.domain.post.dto.PostResDTO;
 import com.rogerdev.blog_service.domain.usersec.UserSec;
@@ -38,8 +40,7 @@ public class PostController {
             @RequestHeader("Authorization") String authorization,
             UriComponentsBuilder uriComponentsBuilder
             ) {
-        String token = authorization.substring(7);
-        DecodedJWT decodedJWT = jwtUtils.validateToken(token);
+        DecodedJWT decodedJWT = jwtUtils.validateToken(authorization);
         UserSec postAuthor = userService.getUserByUsername(jwtUtils.extractUsername(decodedJWT))
                 .orElseThrow(EntityNotFoundException::new);
         Post post = new Post(data);

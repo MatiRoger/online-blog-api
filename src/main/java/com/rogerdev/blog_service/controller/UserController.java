@@ -1,7 +1,9 @@
-package com.rogerdev.blog_service.domain.usersec;
+package com.rogerdev.blog_service.controller;
 
 import com.rogerdev.blog_service.domain.role.Role;
 import com.rogerdev.blog_service.domain.role.RoleService;
+import com.rogerdev.blog_service.domain.usersec.UserSec;
+import com.rogerdev.blog_service.domain.usersec.UserService;
 import com.rogerdev.blog_service.domain.usersec.dto.UserReqDTO;
 import com.rogerdev.blog_service.domain.usersec.dto.UserResDTO;
 import com.rogerdev.blog_service.domain.usersec.dto.UserRoleReqDTO;
@@ -9,12 +11,10 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.DuplicateFormatFlagsException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

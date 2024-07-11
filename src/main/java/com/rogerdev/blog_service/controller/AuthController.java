@@ -1,5 +1,6 @@
-package com.rogerdev.blog_service.domain.usersec;
+package com.rogerdev.blog_service.controller;
 
+import com.rogerdev.blog_service.domain.usersec.UserDetailsServiceImp;
 import com.rogerdev.blog_service.domain.usersec.dto.AuthReqDTO;
 import com.rogerdev.blog_service.domain.usersec.dto.AuthResDTO;
 import jakarta.validation.Valid;

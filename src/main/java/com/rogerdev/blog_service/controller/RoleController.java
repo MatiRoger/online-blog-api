@@ -1,7 +1,9 @@
-package com.rogerdev.blog_service.domain.role;
+package com.rogerdev.blog_service.controller;
 
 import com.rogerdev.blog_service.domain.permission.Permission;
 import com.rogerdev.blog_service.domain.permission.PermissionService;
+import com.rogerdev.blog_service.domain.role.Role;
+import com.rogerdev.blog_service.domain.role.RoleService;
 import com.rogerdev.blog_service.domain.role.dto.RoleModificationResDTO;
 import com.rogerdev.blog_service.domain.role.dto.RoleReqDTO;
 import com.rogerdev.blog_service.domain.role.dto.RoleResDTO;
